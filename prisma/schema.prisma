@@ -1,0 +1,107 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id          Int       @id @default(autoincrement())
+  username    String    @unique
+  email       String    @unique
+  password    String
+  reputation  Int       @default(0)
+  role        Role      @default(USER)
+  created_at  DateTime  @default(now())
+  badges      Badge[]
+  questions   Question[]
+  answers     Answer[]
+  comments    Comment[]
+  votes       Vote[]
+}
+
+model Question {
+  id                Int       @id @default(autoincrement())
+  title             String
+  body              String
+  author            User      @relation(fields: [author_id], references: [id])
+  author_id         Int
+  tags              Tag[]
+  votes             Int       @default(0)
+  created_at        DateTime  @default(now())
+  updated_at        DateTime  @updatedAt
+  accepted_answer   Answer?   @relation("AcceptedAnswer", fields: [accepted_answer_id], references: [id])
+  accepted_answer_id Int?     @unique
+  answers           Answer[]
+  comments          Comment[] @relation("QuestionComments")
+}
+
+model Answer {
+  id           Int       @id @default(autoincrement())
+  body         String
+  author       User      @relation(fields: [author_id], references: [id])
+  author_id    Int
+  question     Question  @relation(fields: [question_id], references: [id])
+  question_id  Int
+  votes        Int       @default(0)
+  created_at   DateTime  @default(now())
+  updated_at   DateTime  @updatedAt
+  comments     Comment[] @relation("AnswerComments")
+  accepted_by  Question? @relation("AcceptedAnswer")
+}
+
+model Comment {
+  id           Int       @id @default(autoincrement())
+  body         String
+  author       User      @relation(fields: [author_id], references: [id])
+  author_id    Int
+  question     Question? @relation("QuestionComments", fields: [question_id], references: [id])
+  question_id  Int?
+  answer       Answer?   @relation("AnswerComments", fields: [answer_id], references: [id])
+  answer_id    Int?
+  created_at   DateTime  @default(now())
+}
+
+model Tag {
+  id          Int       @id @default(autoincrement())
+  name        String    @unique
+  description String?
+  questions   Question[]
+}
+
+model Badge {
+  id          Int       @id @default(autoincrement())
+  name        String
+  description String?
+  user        User      @relation(fields: [user_id], references: [id])
+  user_id     Int
+}
+
+model Vote {
+  id          Int       @id @default(autoincrement())
+  user        User      @relation(fields: [user_id], references: [id])
+  user_id     Int
+  content_id  Int
+  content_type VoteType
+  vote_value  Int
+  created_at  DateTime  @default(now())
+}
+
+enum Role {
+  USER
+  MODERATOR
+  ADMIN
+}
+
+enum ParentType {
+  QUESTION
+  ANSWER
+}
+
+enum VoteType {
+  QUESTION
+  ANSWER
+  COMMENT
+}

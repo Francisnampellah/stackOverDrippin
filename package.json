@@ -4,6 +4,8 @@
   "sideEffects": false,
   "type": "module",
   "scripts": {
+    "prisma": "prisma",
+    "prisma:studio": "prisma studio",
     "build": "remix vite:build",
     "dev": "remix vite:dev",
     "lint": "eslint --ignore-path .gitignore --cache --cache-location ./node_modules/.cache/eslint .",
@@ -11,10 +13,13 @@
     "typecheck": "tsc"
   },
   "dependencies": {
+    "@prisma/client": "^5.19.1",
     "@remix-run/node": "^2.12.0",
     "@remix-run/react": "^2.12.0",
     "@remix-run/serve": "^2.12.0",
+    "faker": "^6.6.6",
     "isbot": "^4.1.0",
+    "prisma": "^5.19.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },
