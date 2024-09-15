@@ -1,4 +1,5 @@
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient } from "@prisma/client";
+
 const prisma = new PrismaClient();
 
 async function addQuestion(questionData: { title: string; body: string; author_id: number; tags: string[]; }) {
@@ -21,5 +22,4 @@ async function addQuestion(questionData: { title: string; body: string; author_i
     return question;
   }
 
-
-  export default addQuestion;
+  export default  addQuestion ;
