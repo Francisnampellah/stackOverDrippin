@@ -10,3 +10,13 @@ export async function findUserById(id: number) {
   });
   return user;
 }
+
+export async function getUserById(id: number) {
+  const user = await prisma.user.findUnique({
+    where: {
+      id: id,
+    },
+  });
+
+  return user;
+}

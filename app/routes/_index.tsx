@@ -4,7 +4,7 @@ import { ActionFunction, LoaderFunction } from "@remix-run/node";
 import { findUserById } from "utils/dataOpreations/user/user";
 import addQuestion from "../../utils/dataOpreations/Question/addQuestion";
 import { useNavigate } from "@remix-run/react";
-import getAllQns from "utils/dataOpreations/Question/Question";
+import {getAllQns} from "utils/dataOpreations/Question/Question";
 
 interface Question {
   id: string;
